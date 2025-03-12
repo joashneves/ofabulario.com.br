@@ -15,5 +15,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "wiki": "file:"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
