@@ -7,10 +7,10 @@ jobs:
   jest:
     name: Jest Ubutu
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 'node'
+          node-version: "node"
       - run: npm ci
       - run: npm run test
