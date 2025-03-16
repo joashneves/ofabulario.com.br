@@ -8,6 +8,7 @@ async function query(queryObject) {
     const result = await client.query(queryObject);
     return result;
   } catch (err) {
+    console.log(err);
     const servicerErrorObject = new ServicerError({
       cause: err,
       message: "Erro na conexão ou na quary",

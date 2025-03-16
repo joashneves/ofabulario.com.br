@@ -1,6 +1,13 @@
+import { createRouter } from "next-connect";
 import database from "infra/database.js";
+import controller from "infra/controller";
+const router = createRouter();
 
-export default async function getHandler(request, response) {
+router.get(getHandler);
+
+export default router.handler(controller.errorHandles);
+
+async function getHandler(request, response) {
   const databaseName = process.env.POSTGRES_DB;
   const openedConnectionDatabase = await database.query({
     text: "SELECT count(*)::int FROM pg_stat_activity WHERE datname = $1;",
