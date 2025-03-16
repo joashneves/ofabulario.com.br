@@ -18,7 +18,7 @@ export class InternalServerError extends Error {
   }
 }
 
-export class ServicerError extends Error {
+export class ServiceError extends Error {
   constructor({ cause, message }) {
     super(message || "Serviço indisponível no momento.", {
       cause,
