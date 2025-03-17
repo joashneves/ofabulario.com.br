@@ -1,35 +1,33 @@
-const { unique } = require("next/dist/build/utils");
-
 exports.up = (pgm) => {
-  pgm.createTable('users', {
+  pgm.createTable("users", {
     id: {
-      type: 'uuid',
+      type: "uuid",
       unique: true,
-      primaryKey: true, 
-      default: pgm.func('gen_random_uuid()'),
+      primaryKey: true,
+      default: pgm.func("gen_random_uuid()"),
     },
     username: {
-      type: 'varchar(30)',
+      type: "varchar(30)",
       unique: true,
       notNull: true,
     },
-    email:{
-      type: 'varchar(254)',
+    email: {
+      type: "varchar(254)",
       unique: true,
       notNull: true,
     },
     password: {
-      type: 'varchar(72)',
+      type: "varchar(72)",
       notNull: true,
     },
-    created_at:{
+    created_at: {
       type: "timestamptz",
-      default: pgm.func('now()'),
+      default: pgm.func("now()"),
     },
-    updated_at:{
+    updated_at: {
       type: "timestamptz",
-      default: pgm.func('now()'),
-    }
+      default: pgm.func("now()"),
+    },
   });
 };
 
