@@ -20,7 +20,7 @@ describe("POST to /api/v1/users", () => {
         },
         body: JSON.stringify({
           username: "joashneves",
-          email: "joashneves@gmail.com",
+          email: "joashneves@s3nha.com",
           password: "senhagenerica",
         }),
       });
@@ -31,7 +31,7 @@ describe("POST to /api/v1/users", () => {
       expect(responseBody).toEqual({
         id: responseBody.id,
         username: "joashneves",
-        email: "joashneves@gmail.com",
+        email: "joashneves@s3nha.com",
         password: "senhagenerica",
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
@@ -48,7 +48,7 @@ describe("POST to /api/v1/users", () => {
         },
         body: JSON.stringify({
           username: "emailduplicado1",
-          email: "duplicado@gmail.com",
+          email: "duplicado@s3nha.com",
           password: "senhagenerica",
         }),
       });
@@ -58,7 +58,7 @@ describe("POST to /api/v1/users", () => {
       expect(responseBody).toEqual({
         id: responseBody.id,
         username: "emailduplicado1",
-        email: "duplicado@gmail.com",
+        email: "duplicado@s3nha.com",
         password: "senhagenerica",
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
@@ -74,7 +74,7 @@ describe("POST to /api/v1/users", () => {
         },
         body: JSON.stringify({
           username: "emailduplicado2",
-          email: "Duplicado@gmail.com",
+          email: "Duplicado@s3nha.com",
           password: "senhagenerica",
         }),
       });
@@ -95,7 +95,7 @@ describe("POST to /api/v1/users", () => {
         },
         body: JSON.stringify({
           username: "userduplicado",
-          email: "emails@gmail.com",
+          email: "emails@s3nha.com",
           password: "senha123",
         }),
       });
@@ -105,7 +105,7 @@ describe("POST to /api/v1/users", () => {
       expect(responseBody4).toEqual({
         id: responseBody4.id,
         username: "userduplicado",
-        email: "emails@gmail.com",
+        email: "emails@s3nha.com",
         password: "senha123",
         created_at: responseBody4.created_at,
         updated_at: responseBody4.updated_at,
@@ -121,7 +121,7 @@ describe("POST to /api/v1/users", () => {
         },
         body: JSON.stringify({
           username: "userduplicado",
-          email: "email@gmail.com",
+          email: "email@s3nha.com",
           password: "senhagenerica",
         }),
       });
