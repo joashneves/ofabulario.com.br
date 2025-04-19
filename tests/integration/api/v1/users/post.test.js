@@ -1,5 +1,8 @@
 import orchestrator from "tests/orchestrator.js";
 import { version as uuidVersion } from "uuid";
+import user from "models/user";
+import password from "models/password";
+
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
   await orchestrator.clearDatabase();
@@ -32,13 +35,20 @@ describe("POST to /api/v1/users", () => {
         id: responseBody.id,
         username: "joashneves",
         email: "joashneves@s3nha.com",
-        password: "senhagenerica",
+        password: responseBody.password,
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+
+      const userInDatabase = await user.findOneByUsername('joashneves');
+      const correcpPasswordMatch = await password.compare("senhagenerica", userInDatabase.password)
+      expect(correcpPasswordMatch).toBe(true)
+
+      const incorrecpPasswordMatch = await password.compare("senhagenericaerrada", userInDatabase.password)
+      expect(incorrecpPasswordMatch).toBe(false)
     });
     test("With duplicated 'email' and invalid data", async () => {
       const response = await fetch("http://localhost:3000/api/v1/users", {
@@ -59,7 +69,7 @@ describe("POST to /api/v1/users", () => {
         id: responseBody.id,
         username: "emailduplicado1",
         email: "duplicado@s3nha.com",
-        password: "senhagenerica",
+        password: responseBody.password,
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
@@ -106,7 +116,7 @@ describe("POST to /api/v1/users", () => {
         id: responseBody4.id,
         username: "userduplicado",
         email: "emails@s3nha.com",
-        password: "senha123",
+        password: responseBody4.password,
         created_at: responseBody4.created_at,
         updated_at: responseBody4.updated_at,
       });
