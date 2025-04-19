@@ -8,7 +8,6 @@ beforeAll(async () => {
 
 describe("Get to /api/v1/users/[username]", () => {
   describe("Anonymous user", () => {
-
     test("With exact case match", async () => {
       const response = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
@@ -22,10 +21,12 @@ describe("Get to /api/v1/users/[username]", () => {
         }),
       });
       expect(response.status).toBe(201);
-      
-      const responseGet = await fetch("http://localhost:3000/api/v1/users/MesmoCase");
 
-      expect(responseGet.status).toBe(200)
+      const responseGet = await fetch(
+        "http://localhost:3000/api/v1/users/MesmoCase",
+      );
+
+      expect(responseGet.status).toBe(200);
       const responseBody = await responseGet.json();
       console.log(responseBody);
       expect(responseBody).toEqual({
@@ -39,7 +40,6 @@ describe("Get to /api/v1/users/[username]", () => {
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
-
     });
 
     test("With case mismatch", async () => {
@@ -55,10 +55,12 @@ describe("Get to /api/v1/users/[username]", () => {
         }),
       });
       expect(response2.status).toBe(201);
-      
-      const response2Get = await fetch("http://localhost:3000/api/v1/users/casediferente");
 
-      expect(response2Get.status).toBe(200)
+      const response2Get = await fetch(
+        "http://localhost:3000/api/v1/users/casediferente",
+      );
+
+      expect(response2Get.status).toBe(200);
       const response2Body = await response2Get.json();
       console.log(response2Body);
       expect(response2Body).toEqual({
@@ -72,24 +74,23 @@ describe("Get to /api/v1/users/[username]", () => {
       expect(uuidVersion(response2Body.id)).toBe(4);
       expect(Date.parse(response2Body.created_at)).not.toBeNaN();
       expect(Date.parse(response2Body.updated_at)).not.toBeNaN();
-
     });
 
-    test("With nonexistent username", async () => {      
-      const response3Get = await fetch("http://localhost:3000/api/v1/users/homeminvisivel");
+    test("With nonexistent username", async () => {
+      const response3Get = await fetch(
+        "http://localhost:3000/api/v1/users/homeminvisivel",
+      );
 
-      expect(response3Get.status).toBe(404)
+      expect(response3Get.status).toBe(404);
       const response3Body = await response3Get.json();
       expect(response3Body).toEqual({
         name: "NotFoundError",
         message: "O username informado não foi encontrado no sistema",
         action: "Verifique se o username está digitado corretamente",
-        status_code: 404
-      })
+        status_code: 404,
+      });
       expect(Date.parse(response3Body.created_at)).toBeNaN();
       expect(Date.parse(response3Body.updated_at)).toBeNaN();
-
     });
-
   });
 });
