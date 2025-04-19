@@ -1,9 +1,11 @@
 import database from "infra/database";
-import {NotFoundError, ValidationError } from "infra/errors";
+import password from 'models/password.js'
+import { NotFoundError, ValidationError } from "infra/errors";
 
 async function create(usersInputValues) {
   await validateUniqueEmail(usersInputValues.email);
   await validateUniqueUsername(usersInputValues.username);
+  await hashPasswordInObject(usersInputValues);
   const newUser = await runInsertQuary(usersInputValues);
   return newUser;
 
@@ -47,6 +49,11 @@ async function create(usersInputValues) {
       });
     }
     return result.rows[0];
+  }
+
+  async function hashPasswordInObject(usersInputValues) {
+    const passwordHash = await password.hash(usersInputValues.password)
+    usersInputValues.password = passwordHash
   }
 
   async function runInsertQuary(usersInputValues) {
