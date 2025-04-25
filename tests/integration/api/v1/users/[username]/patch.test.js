@@ -1,0 +1,125 @@
+import orchestrator from "tests/orchestrator.js";
+import { version as uuidVersion } from "uuid";
+beforeAll(async () => {
+  await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
+  await orchestrator.runPendingMigrations();
+});
+
+describe("Patch to /api/v1/users/[username]", () => {
+  describe("Anonymous user", () => {
+    test("With nonexistent 'username'", async () => {
+      const responsePatch = await fetch(
+        "http://localhost:3000/api/v1/users/homeminvisivel",
+        {
+          method: "PATCH"
+        }
+      );
+
+      expect(responsePatch.status).toBe(404);
+      const responseBody = await responsePatch.json();
+
+      expect(responseBody).toEqual({
+        name: "NotFoundError",
+        message: "O username informado não foi encontrado no sistema",
+        action: "Verifique se o username está digitado corretamente",
+        status_code: 404,
+      });
+      expect(Date.parse(responseBody.created_at)).toBeNaN();
+      expect(Date.parse(responseBody.updated_at)).toBeNaN();
+    });
+
+    test("With duplicated 'username' and invalid data", async () => {
+      const user1Response = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "user1",
+          email: "mesmacoisa@s3nha.com",
+          password: "senha123",
+        }),
+      });
+      expect(user1Response.status).toBe(201);
+
+      const user2Response = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "user2",
+          email: "mesma2coisa@s3nha.com",
+          password: "senha123",
+        }),
+      });
+      expect(user2Response.status).toBe(201);
+   
+      const response = await fetch("http://localhost:3000/api/v1/users/user2", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "user1",
+        }),
+      });
+      expect(response.status).toBe(409);
+      const responseBody = await response.json();
+      expect(responseBody).toEqual({
+        name: "ValidationError",
+        message: "Username ja existe",
+        action: "Escolha outro username",
+        status_code: 409,
+      });
+    });
+
+    test("With duplicated 'email' and invalid data", async () => {
+      const response = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "emailduplicado1",
+          email: "duplicadooutro@s3nha.com",
+          password: "senhagenerica",
+        }),
+      });
+      expect(response.status).toBe(201);
+      
+      const response2 = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "emailduplicado2",
+          email: "Duplicado@s3nha.com",
+          password: "senhagenerica",
+        }),
+      });
+
+      const response5 = await fetch("http://localhost:3000/api/v1/users/emailduplicado2", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "Duplicado@s3nha.com",
+        }),
+      });
+      expect(response5.status).toBe(409);
+      const response5Body = await response5.json();
+      expect(response5Body).toEqual({
+        name: "ValidationError",
+        message: "Email ja existe",
+        action: "Escolha outro email",
+        status_code: 409,
+      });
+
+    });
+
+  });
+});

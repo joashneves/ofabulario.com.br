@@ -80,7 +80,7 @@ export class NotFoundError extends Error {
     super(message || "Não foi possivel encontrar este recurso no sistema");
     this.name = "NotFoundError";
     this.action =
-      action || "Verifiue se os parâmetros enviados na consulta estão certos";
+      action || "Verifique se os parâmetros enviados na consulta estão certos";
     this.statusCode = 404;
   }
 
