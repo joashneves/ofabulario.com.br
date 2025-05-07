@@ -104,7 +104,7 @@ describe("POST to /api/v1/users", () => {
         status_code: 409,
       });
     });
-    
+
     test("With duplicated 'username' and invalid data", async () => {
       const response4 = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
@@ -152,6 +152,5 @@ describe("POST to /api/v1/users", () => {
         status_code: 409,
       });
     });
-    
   });
 });

@@ -102,17 +102,49 @@ async function validateUniqueEmail(email) {
   return result.rows[0];
 }
 
-async function update(username , userInputValues) {
+async function update(username, userInputValues) {
   const currentUser = await findOneByUsername(username);
-  if("email" in userInputValues){
+  if ("email" in userInputValues) {
     await validateUniqueEmail(userInputValues.email);
   }
-  if ("username" in userInputValues){
-    if (currentUser.username.toLowerCase() !== userInputValues.username.toLowerCase()) {
+  if ("username" in userInputValues) {
+    if (
+      currentUser.username.toLowerCase() !==
+      userInputValues.username.toLowerCase()
+    ) {
       await validateUniqueUsername(userInputValues.username);
     }
   }
-   
+  const userWithNewValues = { ...currentUser, ...userInputValues };
+  const updatedUser = await runUpdateQuery(userWithNewValues);
+  return updatedUser;
+
+  async function runUpdateQuery(userWithNewValues) {
+    const passwordHash = await password.hash(userWithNewValues.password);
+    const result = await database.query({
+      text: `
+          UPDATE
+            users
+          SET
+            username = $2,
+            email = $3,
+            password = $4,
+            updated_at = timezone('utc', now())
+          WHERE
+            id = $1
+          RETURNING
+            *
+          `,
+      values: [
+        userWithNewValues.id,
+        userWithNewValues.username,
+        userInputValues.email,
+        passwordHash,
+      ],
+    });
+
+    return result.rows[0];
+  }
 }
 
 const user = {
