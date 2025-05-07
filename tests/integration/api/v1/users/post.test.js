@@ -56,6 +56,7 @@ describe("POST to /api/v1/users", () => {
       );
       expect(incorrecpPasswordMatch).toBe(false);
     });
+
     test("With duplicated 'email' and invalid data", async () => {
       const response = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
@@ -99,10 +100,11 @@ describe("POST to /api/v1/users", () => {
       expect(responseBody2).toEqual({
         name: "ValidationError",
         message: "Email ja existe",
-        action: "Cadastre outro email",
+        action: "Escolha outro email",
         status_code: 409,
       });
     });
+
     test("With duplicated 'username' and invalid data", async () => {
       const response4 = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
@@ -146,7 +148,7 @@ describe("POST to /api/v1/users", () => {
       expect(responseBody3).toEqual({
         name: "ValidationError",
         message: "Username ja existe",
-        action: "Cadastre outro username",
+        action: "Escolha outro username",
         status_code: 409,
       });
     });
