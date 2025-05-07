@@ -155,7 +155,7 @@ describe("Patch to /api/v1/users/[username]", () => {
           }),
         },
       );
-
+      console.log(response.json());  
       const responseUnicoBody = await responseunico.json();
       console.log(responseUnicoBody);
       expect(responseUnicoBody.updated_at > responseUnicoBody.created_at).toBe(
