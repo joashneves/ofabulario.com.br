@@ -35,31 +35,14 @@ describe("Patch to /api/v1/users/[username]", () => {
     });
 
     test("With duplicated 'username' and invalid data", async () => {
-      const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      await orchestrator.createUser({
           username: "user1",
-          email: "mesmacoisa@s3nha.com",
-          password: "senha123",
-        }),
-      });
-      expect(user1Response.status).toBe(201);
-
-      const user2Response = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      })
+        
+      await orchestrator.createUser({
           username: "user2",
-          email: "mesma2coisa@s3nha.com",
-          password: "senha123",
-        }),
-      });
-      expect(user2Response.status).toBe(201);
+        });
+      
 
       const response = await fetch("http://localhost:3000/api/v1/users/user2", {
         method: "PATCH",
@@ -81,33 +64,12 @@ describe("Patch to /api/v1/users/[username]", () => {
     });
 
     test("With duplicated 'email' and invalid data", async () => {
-      const response = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "emailduplicado1",
-          email: "duplicadooutro@s3nha.com",
-          password: "senhagenerica",
-        }),
-      });
-      expect(response.status).toBe(201);
+     await orchestrator.createUser({email: "duplicadooutro@s3nha.com"})
 
-      const response2 = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "emailduplicado2",
-          email: "Duplicado@s3nha.com",
-          password: "senhagenerica",
-        }),
-      });
-
+      const createdUser2 = await orchestrator.createUser({ email: "Duplicado@s3nha.com"})
+      console.log(createdUser2)
       const response5 = await fetch(
-        "http://localhost:3000/api/v1/users/emailduplicado2",
+        `http://localhost:3000/api/v1/users/${createdUser2.username}`,
         {
           method: "PATCH",
           headers: {
