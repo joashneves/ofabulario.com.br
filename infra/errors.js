@@ -94,13 +94,11 @@ export class NotFoundError extends Error {
   }
 }
 
-
 export class unauthorizedError extends Error {
   constructor({ message, action }) {
     super(message || "Usuario não autenticado");
     this.name = "unauthorizedError";
-    this.action =
-      action || "Faça login novamente";
+    this.action = action || "Faça login novamente";
     this.statusCode = 401;
   }
 

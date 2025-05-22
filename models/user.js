@@ -9,7 +9,6 @@ async function create(usersInputValues) {
   const newUser = await runInsertQuary(usersInputValues);
   return newUser;
 
-
   async function runInsertQuary(usersInputValues) {
     const result = await database.query({
       text: `INSERT INTO 
@@ -83,8 +82,6 @@ async function findOneByEmail(email) {
   }
 }
 
-
-
 async function validateUniqueUsername(username) {
   const result = await database.query({
     text: `SELECT
@@ -145,15 +142,14 @@ async function update(username, userInputValues) {
       await validateUniqueUsername(userInputValues.username);
     }
   }
-  if ("password" in userInputValues){
-    await hashPasswordInObject(userInputValues)
+  if ("password" in userInputValues) {
+    await hashPasswordInObject(userInputValues);
   }
   const userWithNewValues = { ...currentUser, ...userInputValues };
   const updatedUser = await runUpdateQuery(userWithNewValues);
   return updatedUser;
 
   async function runUpdateQuery(userWithNewValues) {
-    
     const result = await database.query({
       text: `
           UPDATE
