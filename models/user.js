@@ -9,7 +9,6 @@ async function create(usersInputValues) {
   const newUser = await runInsertQuary(usersInputValues);
   return newUser;
 
-
   async function runInsertQuary(usersInputValues) {
     const result = await database.query({
       text: `INSERT INTO 
@@ -50,6 +49,33 @@ async function findOneByUsername(username) {
       throw new NotFoundError({
         message: "O username informado não foi encontrado no sistema",
         action: "Verifique se o username está digitado corretamente",
+      });
+    }
+    return result.rows[0];
+  }
+}
+
+async function findOneByEmail(email) {
+  const userFound = await runSelectQuery(email);
+
+  return userFound;
+
+  async function runSelectQuery(email) {
+    const result = await database.query({
+      text: `SELECT
+       * 
+      FROM
+       users 
+      WHERE
+        LOWER(email) = LOWER($1)
+      LIMIT
+        1;`,
+      values: [email],
+    });
+    if (result.rowCount === 0) {
+      throw new NotFoundError({
+        message: "O email informado não foi encontrado no sistema",
+        action: "Verifique se o email está digitado corretamente",
       });
     }
     return result.rows[0];
@@ -116,15 +142,14 @@ async function update(username, userInputValues) {
       await validateUniqueUsername(userInputValues.username);
     }
   }
-  if ("password" in userInputValues){
-    await hashPasswordInObject(userInputValues)
+  if ("password" in userInputValues) {
+    await hashPasswordInObject(userInputValues);
   }
   const userWithNewValues = { ...currentUser, ...userInputValues };
   const updatedUser = await runUpdateQuery(userWithNewValues);
   return updatedUser;
 
   async function runUpdateQuery(userWithNewValues) {
-    
     const result = await database.query({
       text: `
           UPDATE
@@ -154,6 +179,7 @@ async function update(username, userInputValues) {
 const user = {
   create,
   findOneByUsername,
+  findOneByEmail,
   update,
 };
 

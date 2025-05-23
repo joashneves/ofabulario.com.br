@@ -1,6 +1,4 @@
-import { password } from "pg/lib/defaults";
 import orchestrator from "tests/orchestrator.js";
-import { version as uuidVersion } from "uuid";
 import user from "models/user";
 import password from "models/password";
 
@@ -36,13 +34,12 @@ describe("Patch to /api/v1/users/[username]", () => {
 
     test("With duplicated 'username' and invalid data", async () => {
       await orchestrator.createUser({
-          username: "user1",
-      })
-        
+        username: "user1",
+      });
+
       await orchestrator.createUser({
-          username: "user2",
-        });
-      
+        username: "user2",
+      });
 
       const response = await fetch("http://localhost:3000/api/v1/users/user2", {
         method: "PATCH",
@@ -64,10 +61,12 @@ describe("Patch to /api/v1/users/[username]", () => {
     });
 
     test("With duplicated 'email' and invalid data", async () => {
-     await orchestrator.createUser({email: "duplicadooutro@s3nha.com"})
+      await orchestrator.createUser({ email: "duplicadooutro@s3nha.com" });
 
-      const createdUser2 = await orchestrator.createUser({ email: "Duplicado@s3nha.com"})
-      console.log(createdUser2)
+      const createdUser2 = await orchestrator.createUser({
+        email: "Duplicado@s3nha.com",
+      });
+      console.log(createdUser2);
       const response5 = await fetch(
         `http://localhost:3000/api/v1/users/${createdUser2.username}`,
         {
@@ -90,7 +89,7 @@ describe("Patch to /api/v1/users/[username]", () => {
       });
     });
 
-    test("With unique'username' ", async () => {
+    test("With unique'username'", async () => {
       const response = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
         headers: {
@@ -117,7 +116,7 @@ describe("Patch to /api/v1/users/[username]", () => {
           }),
         },
       );
-      console.log(response.json());  
+      console.log(response.json());
       const responseUnicoBody = await responseunico.json();
       console.log(responseUnicoBody);
       expect(responseUnicoBody.updated_at > responseUnicoBody.created_at).toBe(

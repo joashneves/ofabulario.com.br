@@ -36,11 +36,11 @@ describe("Get to /api/v1/users/[username]", () => {
 
     test("With case mismatch", async () => {
       await orchestrator.createUser({
-          username: "CaseDiferente",
-          email: "casediferente@s3nha.com",
-          password: "senhagenerica",
-        });
-      
+        username: "CaseDiferente",
+        email: "casediferente@s3nha.com",
+        password: "senhagenerica",
+      });
+
       const response2Get = await fetch(
         "http://localhost:3000/api/v1/users/casediferente",
       );
