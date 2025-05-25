@@ -12,7 +12,7 @@ async function postHandler(request, response) {
 
   console.log(`Dados fornecidos ${JSON.stringify(userInputValues)}`);
 
-  const auth = await authentication.getAuthenticatedUser(
+  await authentication.getAuthenticatedUser(
     userInputValues.email,
     userInputValues.password,
   );
