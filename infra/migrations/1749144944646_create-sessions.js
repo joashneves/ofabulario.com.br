@@ -6,15 +6,15 @@ exports.up = (pgm) => {
       primaryKey: true,
       default: pgm.func("gen_random_uuid()"),
     },
-    token:{
-       type: "varchar(96)",
-       unique: true,
-       notNull: true,
+    token: {
+      type: "varchar(96)",
+      unique: true,
+      notNull: true,
     },
-    user_id:{
-        type: "uuid",
-        notNull: true,
-        //references: "users"
+    user_id: {
+      type: "uuid",
+      notNull: true,
+      //references: "users"
     },
     expires_at: {
       notNull: true,

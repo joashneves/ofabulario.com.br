@@ -109,8 +109,10 @@ describe("POST to /api/v1/session", () => {
     });
 
     test("with correct `email` and correct `password`", async () => {
-      const userCorrect = await orchestrator.createUser({password: "senha123" });
-      console.log(userCorrect)
+      const userCorrect = await orchestrator.createUser({
+        password: "senha123",
+      });
+      console.log(userCorrect);
       const response = await fetch("http://localhost:3000/api/v1/session", {
         method: "POST",
         headers: {
@@ -129,17 +131,17 @@ describe("POST to /api/v1/session", () => {
         id: responseBody2.id,
         token: responseBody2.token,
         user_id: userCorrect.id,
-        expires_at : responseBody2.expires_at,
-        created_at : responseBody2.created_at,
-        updated_at: responseBody2.updated_at
-      })
+        expires_at: responseBody2.expires_at,
+        created_at: responseBody2.created_at,
+        updated_at: responseBody2.updated_at,
+      });
       expect(uuidVersion(responseBody2.id)).toBe(4);
       expect(Date.parse(responseBody2.expires_at)).not.toBeNaN();
       expect(Date.parse(responseBody2.created_at)).not.toBeNaN();
       expect(Date.parse(responseBody2.updated_at)).not.toBeNaN();
-      
-      const expiresAt = new Date(responseBody2.expires_at)
-      const createdAt = new Date(responseBody2.created_at)
+
+      const expiresAt = new Date(responseBody2.expires_at);
+      const createdAt = new Date(responseBody2.created_at);
 
       expiresAt.setMilliseconds(0);
       createdAt.setMilliseconds(0);
@@ -155,7 +157,7 @@ describe("POST to /api/v1/session", () => {
         maxAge: session.EXPIRATION_IN_MILLISECONDS / 1000,
         path: "/",
         httpOnly: true,
-      })
+      });
     });
   });
 });
