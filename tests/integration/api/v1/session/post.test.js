@@ -91,24 +91,6 @@ describe("POST to /api/v1/session", () => {
     });
 
     test("with correct `email` and correct `password`", async () => {
-      const userTest2 = await orchestrator.createUser({
-        password: "senha-correta",
-      });
-
-      const response2 = await fetch("http://localhost:3000/api/v1/session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "aplication/json",
-        },
-        body: JSON.stringify({
-          email: userTest2.email,
-          password: "senha-correta",
-        }),
-      });
-      expect(response2.status).toBe(201);
-    });
-
-    test("with correct `email` and correct `password`", async () => {
       const userCorrect = await orchestrator.createUser({
         password: "senha123",
       });
