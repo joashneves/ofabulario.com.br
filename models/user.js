@@ -33,7 +33,7 @@ async function findOneById(id) {
 
   return userFound;
 
-  async function runSelectQuery(username) {
+  async function runSelectQuery(id) {
     const result = await database.query({
       text: `SELECT
        * 
