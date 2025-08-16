@@ -94,10 +94,10 @@ export class NotFoundError extends Error {
   }
 }
 
-export class unauthorizedError extends Error {
+export class UnauthorizedError extends Error {
   constructor({ message, action }) {
     super(message || "Usuario não autenticado");
-    this.name = "unauthorizedError";
+    this.name = "UnauthorizedError";
     this.action = action || "Faça login novamente";
     this.statusCode = 401;
   }

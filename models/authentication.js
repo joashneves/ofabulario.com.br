@@ -1,4 +1,4 @@
-import { unauthorizedError } from "infra/errors";
+import { UnauthorizedError } from "infra/errors";
 import password from "./password";
 import user from "./user";
 
@@ -11,10 +11,10 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
 
     return storedUser;
   } catch (error) {
-    if (error instanceof unauthorizedError) {
-      throw new unauthorizedError({
+    if (error instanceof UnauthorizedError) {
+      throw new UnauthorizedError({
         message: "Dados de autenticação não conferem.",
-        action: "Verifique se os dados enviados estão correto",
+        action: "Verifique se os dados enviados estão corretos",
       });
     }
     console.log(error);
@@ -27,9 +27,9 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
     try {
       storedUser = await user.findOneByEmail(providedEmail);
     } catch {
-      throw new unauthorizedError({
+      throw new UnauthorizedError({
         message: "Email não confere.",
-        action: "Verifique se os dados enviados estão correto",
+        action: "Verifique se os dados enviados estão corretos",
       });
     }
 
@@ -43,9 +43,9 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
     );
 
     if (!correctPassowrdMatch) {
-      throw new unauthorizedError({
+      throw new UnauthorizedError({
         message: "Senha não confere.",
-        action: "Verifique se os dados enviados estão correto",
+        action: "Verifique se os dados enviados estão corretos",
       });
     }
   }
