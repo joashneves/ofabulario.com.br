@@ -36,6 +36,7 @@ describe("POST to /api/v1/users", () => {
         username: "joashneves",
         email: "joashneves@s3nha.com",
         password: responseBody.password,
+        features:["read:activation_token"],
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
@@ -77,6 +78,7 @@ describe("POST to /api/v1/users", () => {
         username: "emailduplicado1",
         email: "duplicado@s3nha.com",
         password: responseBody.password,
+        features:["read:activation_token"],
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
@@ -125,6 +127,7 @@ describe("POST to /api/v1/users", () => {
         username: "userduplicado",
         email: "emails@s3nha.com",
         password: responseBody4.password,
+        features:["read:activation_token"],
         created_at: responseBody4.created_at,
         updated_at: responseBody4.updated_at,
       });
